@@ -21,6 +21,8 @@ if config.config_file_name is not None:
 from app.db.database import Base
 from app.models.user import User
 from app.models.refresh_token import RefreshToken
+from app.models.event import Event
+from app.models.seats import Seat
 
 target_metadata = Base.metadata
 
