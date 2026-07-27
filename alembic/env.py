@@ -23,6 +23,7 @@ from app.models.user import User
 from app.models.refresh_token import RefreshToken
 from app.models.event import Event
 from app.models.seats import Seat
+from app.models.booking import Booking
 
 target_metadata = Base.metadata
 
