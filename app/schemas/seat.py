@@ -8,3 +8,12 @@ class SeatResponse(BaseModel):
     model_config = {
         "from_attributes": True
     }
+
+class SeatStatusResponse(BaseModel):
+    id:int
+    seat_number: int
+    status: str
+
+    model_config = {
+        "from_attributes": True
+    }

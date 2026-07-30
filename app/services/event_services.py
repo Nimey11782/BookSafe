@@ -2,7 +2,10 @@ from sqlalchemy.orm import Session
 
 from app.models.event import Event
 from app.schemas.event import EventCreate
+from app.schemas.seat import SeatStatusResponse
 from app.models.seats import Seat
+from fastapi import HTTPException
+from app.core.redis import redis_client
 
 def create_event(db: Session,event: EventCreate):
     new_event=Event(
@@ -49,3 +52,4 @@ def get_event_seats(db: Session,event_id:int):
         select(Seat).where(Seat.event_id==event_id)
     ).all()
     return seats
+

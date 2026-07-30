@@ -96,3 +96,49 @@ def store_reservation(
         json.dumps(reservation),
         ex=600,
     )
+
+
+
+import json
+
+from fastapi import HTTPException
+
+from app.core.redis import redis_client
+
+
+def cancel_reservation(reservation_id: str,current_user_id: int):
+    
+    reservation = redis_client.get(
+        f"reservation:{reservation_id}"
+    )
+
+    if reservation is None:
+        raise HTTPException(
+            status_code=400,
+            detail="Reservation expired or not found.",
+        )
+
+    reservation = json.loads(
+        reservation
+    )
+
+    if reservation["user_id"] != current_user_id:
+        raise HTTPException(
+            status_code=403,
+            detail="This reservation does not belong to you.",
+        )
+
+    seat_ids = reservation["seat_ids"]
+
+    redis_client.delete(
+        f"reservation:{reservation_id}"
+    )
+
+    for seat_id in seat_ids:
+        redis_client.delete(
+            f"seat:{seat_id}"
+        )
+
+    return {
+        "message": "Reservation cancelled successfully."
+    }
