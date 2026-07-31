@@ -72,6 +72,7 @@ def confirm_booking(db:Session,reservation_id: str,current_user_id: int,):
 
     return {
         "message": "Booking confirmed successfully.",
+        "event_id": seats[0].event_id,
         "seats": seat_ids,
     }
 

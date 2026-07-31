@@ -7,7 +7,8 @@ from sqlalchemy import select
 from app.core.redis import redis_client
 from app.schemas.reservation import ReservationRequest
 from app.models.seats import Seat
-        
+
+
 def create_reservation(db, user_id: int, request: ReservationRequest):
 
     reservation_id = str(uuid.uuid4())#uniquely creating for every reservation
@@ -27,6 +28,8 @@ def create_reservation(db, user_id: int, request: ReservationRequest):
     return {
         "reservation_id": reservation_id,
         "expires_in": 600,
+        "event_id": seats[0].event_id,
+        "seat_ids": request.seat_ids,
     }
 
 def validate_seats(seats,request):
@@ -107,7 +110,7 @@ from app.core.redis import redis_client
 
 
 def cancel_reservation(reservation_id: str,current_user_id: int):
-    
+
     reservation = redis_client.get(
         f"reservation:{reservation_id}"
     )
